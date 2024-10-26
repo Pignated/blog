@@ -1,0 +1,1 @@
+//Get called with title as a prop/attribute, format it and spit it out.

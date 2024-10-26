@@ -1,0 +1,30 @@
+/* The following block can be included in a custom.scss */
+
+/* make the customizations */
+
+/* import bootstrap to set changes */
+$theme-colors: (
+  'primary': rgb(42, 231, 25),
+  'danger': tomato
+);
+$danger : tomato;
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+.navbar{
+    background-color: $danger;
+    color: $yellow;
+    font-weight: 600;
+    :hover{
+        color:$yellow-500;
+    }
+    &Navbar{
+    border: 3px solid rebeccapurple;
+    }
+    
+}
+.page-title-div{
+  width: 100%;
+  h1{
+  text-align:center;
+  }
+}

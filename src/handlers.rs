@@ -4,14 +4,13 @@ use std::hash::{DefaultHasher, Hash, Hasher};
 use actix_web::{post, web, HttpResponse, Responder};
 use sqlite::State;
 
-use crate::{models::{PartialUser, Response}, password_handler::{hash_password, salt_password}};
+use crate::{models::{EmailUser, PartialUser, Response}, password_handler::{hash_password, salt_password}};
 
 #[post("/auth/signup")]
-async fn sign_up(body: web::Json<PartialUser>) -> impl Responder {
-
-    eprintln!("AHHHH");
+async fn sign_up(body: web::Json<EmailUser>) -> impl Responder {
     let username = body.username.to_lowercase();
     let password = &body.password;
+    let email = body.email.to_lowercase();
     let connection = sqlite::open(".\\database\\web.db").unwrap();
     if !username_available(username.clone()) {
         let already_exists = Response {
@@ -48,8 +47,8 @@ async fn sign_up(body: web::Json<PartialUser>) -> impl Responder {
         status: "success".to_string(),
         message: format!("User {} created!!", &username)
     };
-    let query = format!("insert into users values ({}, \'{}\',\'{}\',\'{}\')",
-    id, username, hashed_password, salt);
+    let query = format!("insert into users values ({}, \'{}\',\'{}\',\'{}\', \'{}\')",
+    id, username, hashed_password, salt, email);
     let _ = match connection.execute(query) {
         Ok(_) => return HttpResponse::Ok().json(completed),
         Err(_) => return HttpResponse::InternalServerError().json(failed_to_add)
@@ -84,6 +83,7 @@ async fn sign_in(body: web::Json<PartialUser>) -> impl Responder {
 
     return HttpResponse::Unauthorized().json(login_failure);
 }
+
 fn username_available(username:String) -> bool {
     let mut returned_value:u64 = 1;
     let connection = sqlite::open(".\\database\\web.db").unwrap();

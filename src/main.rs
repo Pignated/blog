@@ -1,4 +1,4 @@
-use std::{env, io};
+use std::io;
 use actix_web::{middleware::Logger, web, App, HttpServer};
 use actix_web_lab::web::spa;
 use handlers::{sign_in, sign_up};

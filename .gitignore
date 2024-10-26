@@ -1,2 +1,4 @@
 /target
 .env
+database/web.db
+src/app/node_modules/*
